@@ -33,31 +33,38 @@ final class GameScene: SKScene {
 		spaceShuttle.physicsBody = SKPhysicsBody(texture: spaceShuttle.texture!, size: spaceShuttle.size)
 		spaceShuttle.physicsBody?.isDynamic = false
 		addChild(spaceShuttle)
+
+		let asteroid = SKAction.run {
+			let asteroid = self.createAsteroid()
+			self.addChild(asteroid)
+		}
+		let asteroidPerSecond = 3.0
+		let asteroidDelay = SKAction.wait(forDuration: 1.0 / asteroidPerSecond, withRange: 0.5)
+		
+		let asteroidSequenceAction = SKAction.sequence([asteroid, asteroidDelay])
+		
+		let asteroidLoop = SKAction.repeatForever(asteroidSequenceAction)
+		run(asteroidLoop)
 	}
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		if let touch = touches.first {
+
 			// Detecting point of touch
 			let touchLocation = touch.location(in: self)
 
+			let distance = distanceCalc(a: spaceShuttle.position, b: touchLocation)
+			let speed: CGFloat = 500.0
+			let time = timeToDestination(distance: distance, speed: speed)
+
 			// Creating and adding action to shuttle
-			let moveAction = SKAction.move(to: touchLocation, duration: 0.5)
+			let moveAction = SKAction.move(to: touchLocation, duration: time)
 			spaceShuttle.run(moveAction)
-			
-			let asteroid = SKAction.run {
-				let asteroid = self.createAsteroid()
-				self.addChild(asteroid)
-			}
-			let asteroidDelay = SKAction.wait(forDuration: 1.0, withRange: 0.5)
-
-			let asteroidSequenceAction = SKAction.sequence([asteroid, asteroidDelay])
-
-			let asteroidLoop = SKAction.repeatForever(asteroidSequenceAction)
-			run(asteroidLoop)
 		}
 	}
 
 	func createAsteroid() -> SKSpriteNode {
+
 		let asteroid = SKSpriteNode(imageNamed: "asteroid")
 
 		let randomScale = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 6)) / 10
@@ -72,5 +79,16 @@ final class GameScene: SKScene {
 		asteroid.physicsBody = SKPhysicsBody(texture: asteroid.texture!, size: asteroid.size)
 		
 		return asteroid
+	}
+
+	func distanceCalc(a: CGPoint, b: CGPoint) -> CGFloat {
+
+		return sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y))
+	}
+
+	func timeToDestination(distance: CGFloat, speed: CGFloat) -> TimeInterval {
+
+		let time = distance / speed
+		return TimeInterval(time)
 	}
 }
