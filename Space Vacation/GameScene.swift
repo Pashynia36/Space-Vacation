@@ -39,4 +39,16 @@ final class GameScene: SKScene {
 			spaceShuttle.run(moveAction)
 		}
 	}
+
+	func createAsteroid() -> SKSpriteNode {
+		let asteroid = SKSpriteNode(imageNamed: "asteroid")
+		asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: Int(frame.size.height)))
+		asteroid.position.y = frame.size.height / 2
+		return asteroid
+	}
+	
+	override func update(_ currentTime: TimeInterval) {
+		let asteroid = createAsteroid()
+		addChild(asteroid)
+	}
 }
