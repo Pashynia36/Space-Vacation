@@ -41,6 +41,17 @@ final class GameScene: SKScene {
 			// Creating and adding action to shuttle
 			let moveAction = SKAction.move(to: touchLocation, duration: 0.5)
 			spaceShuttle.run(moveAction)
+			
+			let asteroid = SKAction.run {
+				let asteroid = self.createAsteroid()
+				self.addChild(asteroid)
+			}
+			let asteroidDelay = SKAction.wait(forDuration: 1.0, withRange: 0.5)
+
+			let asteroidSequenceAction = SKAction.sequence([asteroid, asteroidDelay])
+
+			let asteroidLoop = SKAction.repeatForever(asteroidSequenceAction)
+			run(asteroidLoop)
 		}
 	}
 
@@ -53,10 +64,5 @@ final class GameScene: SKScene {
 		asteroid.physicsBody = SKPhysicsBody(texture: asteroid.texture!, size: asteroid.size)
 		
 		return asteroid
-	}
-	
-	override func update(_ currentTime: TimeInterval) {
-		let asteroid = createAsteroid()
-		addChild(asteroid)
 	}
 }
