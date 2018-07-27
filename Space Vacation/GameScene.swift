@@ -57,7 +57,13 @@ final class GameScene: SKScene {
 
 	func createAsteroid() -> SKSpriteNode {
 		let asteroid = SKSpriteNode(imageNamed: "asteroid")
-		asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 6))
+
+		let randomScale = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 4))
+		
+		asteroid.xScale = randomScale
+		asteroid.yScale = randomScale
+		
+		asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 16))
 		asteroid.position.y = frame.size.height + asteroid.size.height
 		
 		
