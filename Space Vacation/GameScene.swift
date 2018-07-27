@@ -16,7 +16,15 @@ final class GameScene: SKScene {
 
 	override func didMove(to view: SKView) {
 
+		// background init
+
+		let screenSize = UIScreen.main.bounds
+		let spaceBackground = SKSpriteNode(imageNamed: "spaceBackground")
+		spaceBackground.size = CGSize(width: screenSize.width * 2.5, height: screenSize.height * 2.5)
+		addChild(spaceBackground)
+		
 		// Initalization of node
+
 		spaceShuttle = SKSpriteNode(imageNamed: "shuttle")
 		addChild(spaceShuttle)
 	}
