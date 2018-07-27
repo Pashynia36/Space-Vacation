@@ -26,6 +26,10 @@ final class GameScene: SKScene {
 		// Initalization of node
 
 		spaceShuttle = SKSpriteNode(imageNamed: "shuttle")
+		spaceShuttle.xScale = 2
+		spaceShuttle.yScale = 2
+		spaceShuttle.physicsBody = SKPhysicsBody(texture: spaceShuttle.texture!, size: spaceShuttle.size)
+		spaceShuttle.physicsBody?.isDynamic = false
 		addChild(spaceShuttle)
 	}
 
@@ -42,8 +46,12 @@ final class GameScene: SKScene {
 
 	func createAsteroid() -> SKSpriteNode {
 		let asteroid = SKSpriteNode(imageNamed: "asteroid")
-		asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: Int(frame.size.height)))
-		asteroid.position.y = frame.size.height / 2
+		asteroid.position.x = CGFloat(GKRandomSource.sharedRandom().nextInt(upperBound: 6))
+		asteroid.position.y = frame.size.height + asteroid.size.height
+		
+		
+		asteroid.physicsBody = SKPhysicsBody(texture: asteroid.texture!, size: asteroid.size)
+		
 		return asteroid
 	}
 	
