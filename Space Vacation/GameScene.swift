@@ -63,7 +63,16 @@ final class GameScene: SKScene {
 		}
 	}
 
-	func createAsteroid() -> SKSpriteNode {
+	override func didSimulatePhysics() {
+		enumerateChildNodes(withName: "asteroid") { (asteroid, stop) in
+			let screenHeight = UIScreen.main.bounds.height
+			if asteroid.position.y < screenHeight {
+				asteroid.removeFromParent()
+			}
+		}
+	}
+
+	private func createAsteroid() -> SKSpriteNode {
 
 		let asteroid = SKSpriteNode(imageNamed: "asteroid")
 
@@ -81,12 +90,12 @@ final class GameScene: SKScene {
 		return asteroid
 	}
 
-	func distanceCalc(a: CGPoint, b: CGPoint) -> CGFloat {
+	private func distanceCalc(a: CGPoint, b: CGPoint) -> CGFloat {
 
 		return sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y))
 	}
 
-	func timeToDestination(distance: CGFloat, speed: CGFloat) -> TimeInterval {
+	private func timeToDestination(distance: CGFloat, speed: CGFloat) -> TimeInterval {
 
 		let time = distance / speed
 		return TimeInterval(time)
